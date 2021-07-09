@@ -7,12 +7,19 @@ const showHelloWorld = {
     trial_duration: 5 * 1000
 }
 
+const showMyName = {
+    type: 'html-keyboard-response',
+    stimulus: '伊丸岡俊秀',
+    choices: ['f','j']
+}
+
 //空のtimelineを作成
 const timeline = [];
 
 //以下は使用時には削除してください
 //各試行・ブロックをtimelineに追加
 timeline.push(showHelloWorld);
+timeline.push(showMyName);
 
 //以下はjsPsychの初期設定
 //デフォルトでのデータ保存は終了時に画面に表示
