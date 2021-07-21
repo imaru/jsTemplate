@@ -21,7 +21,7 @@ var text=['石川','富山','福井','長野','新潟'];
 
 for (var i=0; i<length(text); i++){
     var stimtext = {
-        type='html-keyboard-response',
+        type: 'html-keyboard-response',
         stimulus: text[i],
         choices: ['f','j']
     }
