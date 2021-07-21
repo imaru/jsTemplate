@@ -340,3 +340,11 @@ input[type="checkbox"] {
 #jspsych-data-display {
     text-align: left;
 }
+
+/* image presentation */
+.jspsych-image-left{
+    text-align: left;
+}
+.jspsych-image-center{
+    text-align: center;
+}
