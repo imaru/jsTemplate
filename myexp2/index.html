@@ -8,6 +8,23 @@
     <meta name="author" content="MK lab" />
     <title>Experiment</title>
     <link href="mklabPlugins/jspsych-mk.css" rel="stylesheet" type="text/css">
+    <script>
+        function saveData(filename, filedata) {
+            $.ajax({
+                type: 'post',
+                cache: false,
+                url: 'save_data.php', // this is the path to the above PHP script
+                data: { filename: filename, filedata: filedata }
+            });
+        }
+        // call the saveData function after the experiment is over
+        jsPsych.init({
+
+            // code to define the experiment structure would go here...
+
+            on_finish: function (data) { saveData("filename.csv", jsPsych.data.dataAsCSV()) }
+        });
+    </script>
 </head>
 
 <body>
@@ -20,4 +37,5 @@
     <script src="main.js"></script>
     <!--ここまで-->
 </body>
+
 </html>
