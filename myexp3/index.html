@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="MK lab" />
+    <title>Experiment</title>
+    <link href="mklabPlugins/jspsych-mk.css" rel="stylesheet" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!-- <script src="js/jquery-ui.min.js"></script> -->
+   
+</head>
+
+<body>
+    <script src="jspsych/jspsych.js"></script>
+    <!-- 必要なプラグインを記述 -->
+    <script src="jspsych/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych/plugins/jspsych-survey-likert.js"></script>
+    <script src="jspsych/plugins/jspsych-single-stim.js"></script>
+    <script src="jspsych/plugins/jspsych-text.js"></script>
+    <!-- ここまで -->
+
+    <!-- 実験ファイルを記述-->
+    <script src="main.js"></script>
+    <!--ここまで-->
+</body>
+<script>
+    function saveData(filename, filedata) {
+        $.ajax({
+            type: 'post',
+            cache: false,
+            url: './save_data.php', // this is the path to the above PHP script
+            data: { filename: filename, filedata: filedata }
+        });
+    }
+</script>
+</html>
