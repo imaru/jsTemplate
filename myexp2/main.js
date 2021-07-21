@@ -11,19 +11,29 @@ const timeline = [];
 const showMyName = {
     type: 'html-keyboard-response',
     stimulus: '伊丸岡俊秀',
-    choices: ['f','j']
+    choices: ['f', 'j']
 }
 timeline.push(showHelloWorld);
 
+// 現在日時からタイムスタンプのファイル名を生成
+const d = new Date(); // Today
+const DateTimeFormat = 'YYYYMMDD_hhmiss'; // "2019/10/04 12:34:56" -> "20191004_123456"
+let toFileName = DateTimeFormat
+    .replace(/YYYY/g, String(d.getFullYear()))
+    .replace(/MM/g, ('0' + (d.getMonth() + 1)).slice(-2))
+    .replace(/DD/g, ('0' + d.getDate()).slice(-2))
+    .replace(/hh/g, ('0' + d.getHours()).slice(-2))
+    .replace(/mi/g, ('0' + d.getMinutes()).slice(-2))
+    .replace(/ss/g, ('0' + d.getSeconds()).slice(-2));
 
 //刺激語
-var text=['石川','富山','福井','長野','新潟'];
+var text = ['石川', '富山', '福井', '長野', '新潟'];
 
-for (var i=0; i<text.length; i++){
+for (var i = 0; i < text.length; i++) {
     var stimtext = {
         type: 'html-keyboard-response',
         stimulus: text[i],
-        choices: ['f','j']
+        choices: ['f', 'j']
     }
     timeline.push(stimtext);
 }
@@ -38,8 +48,9 @@ for (var i=0; i<text.length; i++){
 //csvで出力したい場合は「終了時にcsvに出力」の方を利用する
 jsPsych.init({
     timeline: timeline,
-    on_finish: function()
-    {
+    on_finish: function () {
+        console.log(toFileName)
+        saveData(toFileName+'.csv', jsPsych.data.get().csv())
         //終了時にデータを画面に表示
         //jsPsych.data.displayData("csv")
 
@@ -47,3 +58,4 @@ jsPsych.init({
         //jsPsych.data.get().localSave("csv", "data.csv")
     }
 });
+
