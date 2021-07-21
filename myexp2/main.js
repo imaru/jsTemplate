@@ -19,7 +19,7 @@ const timeline = [];
 //刺激語
 var text=['石川','富山','福井','長野','新潟'];
 
-for (var i=0; i<length(text); i++){
+for (var i=0; i<text.length; i++){
     var stimtext = {
         type: 'html-keyboard-response',
         stimulus: text[i],
