@@ -6,15 +6,15 @@ const showHelloWorld = {
     choices: jsPsych.NO_KEYS,
     trial_duration: 1 * 1000
 }
-
+//空のtimelineを作成
+const timeline = [];
 const showMyName = {
     type: 'html-keyboard-response',
     stimulus: '伊丸岡俊秀',
     choices: ['f','j']
 }
+timeline.push(showHelloWorld);
 
-//空のtimelineを作成
-const timeline = [];
 
 //刺激語
 var text=['石川','富山','福井','長野','新潟'];
@@ -25,13 +25,13 @@ for (var i=0; i<text.length; i++){
         stimulus: text[i],
         choices: ['f','j']
     }
-    //timeline.push(stimtext);
+    timeline.push(stimtext);
 }
 
 //以下は使用時には削除してください
 //各試行・ブロックをtimelineに追加
-timeline.push(showHelloWorld);
-timeline.push(stimtext);
+
+//timeline.push(stimtext);
 
 //以下はjsPsychの初期設定
 //デフォルトでのデータ保存は終了時に画面に表示
@@ -41,7 +41,7 @@ jsPsych.init({
     on_finish: function()
     {
         //終了時にデータを画面に表示
-        jsPsych.data.displayData("csv")
+        //jsPsych.data.displayData("csv")
 
         //終了時にデータをcsvに出力
         //jsPsych.data.get().localSave("csv", "data.csv")
