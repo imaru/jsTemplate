@@ -31,7 +31,7 @@ for (var i=0; i<length(text); i++){
 //以下は使用時には削除してください
 //各試行・ブロックをtimelineに追加
 timeline.push(showHelloWorld);
-timeline.push(stimtext;
+timeline.push(stimtext);
 
 //以下はjsPsychの初期設定
 //デフォルトでのデータ保存は終了時に画面に表示
