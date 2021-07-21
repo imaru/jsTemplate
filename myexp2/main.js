@@ -49,7 +49,6 @@ for (var i = 0; i < text.length; i++) {
 jsPsych.init({
     timeline: timeline,
     on_finish: function () {
-        console.log(toFileName)
         saveData(toFileName+'.csv', jsPsych.data.get().csv())
         //終了時にデータを画面に表示
         //jsPsych.data.displayData("csv")
