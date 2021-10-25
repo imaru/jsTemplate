@@ -42,7 +42,7 @@ var question2 = ['<p class="center-content">画像がどのくらい明るいか
 // それぞれの質問に対してスケールに表示させる文言
 var scale1 = ["全く美しくない", "かなり美しくない", "あまり美しくない", "どちらともいえない", "やや美しい", "かなり美しい", "とても美しい"];
 var scale2 = ["とても暗い", "かなり暗い", "やや暗い", "やや明るい", "かなり明るい", "とても明るい"];
-var datestr=new Date(); // 日時の情報
+var datestr = new Date(); // 日時の情報
 // スペースキーのあとのブランクを800ms から1200msに。
 var post_trial_gap = function () {
     var minTime = 800;
@@ -51,9 +51,10 @@ var post_trial_gap = function () {
 }
 
 var welcome_block = {
-    type: "text",
-    text: '<p class="center-content">実験へのご協力をありがとうございます。<br>実験を始める前に、ウェブブラウザ以外のアプリケーションを終了してください。<br>実験中はブラウザの「戻る」ボタンはクリックしないでください。<br><br>準備ができたらスペースキーを押してください。</p>',
-    cont_key: [32], // スペースキー以外の入力を受け付けない。
+    type: "html-keyboard-response",
+    stimulus: '<p class="center-content">実験へのご協力をありがとうございます。<br>実験を始める前に、ウェブブラウザ以外のアプリケーションを終了してください。<br>実験中はブラウザの「戻る」ボタンはクリックしないでください。<br><br>準備ができたらスペースキーを押してください。</p>',
+    choices: [32],
+    //cont_key: [32], // スペースキー以外の入力を受け付けない。
     on_finish: function () {
         var month2 = datestr.getMonth() + 1; // getMonthの戻り値は0から始まるため。
         // 日時の情報と、実験参加者ごとにランダムな識別番号を追加。
@@ -76,38 +77,42 @@ let toFileName = DateTimeFormat
     .replace(/mi/g, ('0' + d.getMinutes()).slice(-2))
     .replace(/ss/g, ('0' + d.getSeconds()).slice(-2));
 
-var experiment = []; // 初期化
-experiment.push(welcome_block); // 実験開始時の文章（ブロック）を追加。
+function start() {
+    var experiment = []; // 初期化
+    experiment.push(welcome_block); // 実験開始時の文章（ブロック）を追加。
 
-for (var k = 0; k < nRepeat; k++) {
-    var shuffledArray = jsPsych.randomization.shuffle(test_stimuli); // 刺激をランダムな順番で呈示するため
+    for (var k = 0; k < nRepeat; k++) {
+        var shuffledArray = jsPsych.randomization.shuffle(test_stimuli); // 刺激をランダムな順番で呈示するため
 
-    for (var i = 0; i < test_stimuli.length; i++) {
-        var trial = {
-            type: 'survey-likert', // 使用するプラグイン
-            preamble: ['<div class="center-content"><img src="' + shuffledArray[i] + '"></img></div>'], // 呈示する画像の指定
-            questions: [question1, question2],
-            labels: [scale1, scale2],
-            intervals: [[7, 6]], // 質問1については7件法で、質問2については6件法で回答
-            data: { repeat_count: k + 1, trial_count: i + 1, stimulus2: shuffledArray[i] }, // 保存したいデータを任意で追加することができます。
-            on_finish: function (data) {
-                var arrayResponses = JSON.parse(data.responses); // responsesは文字列型で集計時に扱いにくいため、データを切り分けます。
-                jsPsych.data.addDataToLastTrial(arrayResponses);
-            }
-        };
-        experiment.push(trial);
+        for (var i = 0; i < test_stimuli.length; i++) {
+            var trial = {
+                type: 'survey-likert', // 使用するプラグイン
+                preamble: ['<div class="jspsych-image-center"><img src="' + shuffledArray[i] + '"></img></div>'], // 呈示する画像の指定
+                questions: [
+                    {prompt: question1, labels: scale1},
+                    {prompt: question2, labels: scale2}
+                ],
+                //labels: [scale1, scale2],
+                //intervals: [[7, 6]], // 質問1については7件法で、質問2については6件法で回答
+                data: { repeat_count: k + 1, trial_count: i + 1, stimulus2: shuffledArray[i] }, // 保存したいデータを任意で追加することができます。
+                on_finish: function (data) {
+                    var arrayResponses = JSON.parse(data.responses); // responsesは文字列型で集計時に扱いにくいため、データを切り分けます。
+                    jsPsych.data.addDataToLastTrial(arrayResponses);
+                } 
+            };
+            experiment.push(trial);
+        }
     }
+
+    jsPsych.init({
+        //display_element: $('#jspsych-target'),
+        timeline: experiment,
+        on_finish: function (data) {
+            //jsPsych.data.displayData('csv') // 画面上にカンマ区切りでデータを表示します。
+            saveData(toFileName + '.csv', jsPsych.data.get().csv())
+        }
+    });
 }
-
-jsPsych.init({
-    //display_element: $('#jspsych-target'),
-    timeline: experiment,
-    on_finish: function (data) {
-        //jsPsych.data.displayData('csv') // 画面上にカンマ区切りでデータを表示します。
-        saveData(toFileName + '.csv', jsPsych.data.get().csv())
-    }
-});
-
 
 jsPsych.pluginAPI.preloadImages(test_stimuli, start); // あらかじめ実験で用いる画像を読み込んでおく。
 
